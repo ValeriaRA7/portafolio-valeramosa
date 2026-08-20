@@ -7,12 +7,12 @@ plugins:
   - jekyll-remote-theme
   - jekyll-seo-tag
 
-# IMPORTANTES:
+# IMPORTANTES:sss
 # - Para GitHub Pages (Project Page), edita:
-#     url: "https://TU_USUARIO.github.io"
-#     baseurl: "/NOMBRE_DEL_REPO"
-url: "https://hubergiron.github.io/"
-baseurl: "/portafolio-just-the-docs"
+#     url: "https://ValeriaRA7.github.io"
+#     baseurl: "/portafolio-valeramosa"
+url: "https://ValeriaRA7.github.io/"
+baseurl: "/portafolio-valeramosa"
 
 #Configuracion Formato, Header y Footer
 just_the_docs:
