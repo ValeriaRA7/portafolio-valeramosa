@@ -4,11 +4,6 @@ title: Publicar en GitHub Pages
 nav_order: 2
 ---
 
-# Acerca de mi 
-- Me llamo Valeria Ramos Acevedo 
-- Tengo 18 años 
-- Estudio Ingeniería Mecatrónica 
-
 # Publicar sitio en GitHub Pages
 
 En este curso vamos a publicar tu documentación como un **sitio web** usando:
