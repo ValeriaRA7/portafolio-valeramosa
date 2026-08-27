@@ -4,7 +4,7 @@ title: Semana 1: Portafolio Web
 nav_order: 3
 ---
 
-## 2. Crear el proyecto en GitHub
+## 2. ¿Cómo lo hice?
 
 Para empezar mi proyecto, utilicé un repositorio que ya venía como plantilla. Básicamente, este repositorio ya tenía la estructura necesaria, así que no tuve que crear todo desde cero.
 
@@ -37,33 +37,7 @@ Después hice clic en **Create fork**.
 
 Y listo. Ahora ya tenía una copia completa del proyecto en mi propia cuenta de GitHub, sin tener que descargar y volver a subir todos los archivos manualmente.
 
----
 
-### Ruta B: Crear un repositorio desde cero
-
-También existe otra forma de hacerlo, aunque esta no fue la que utilicé. Esta opción sirve si necesitas crear un repositorio completamente nuevo.
-
-Primero tienes que ir a GitHub y hacer clic en **New repository**.
-
-*[Figura 4. Botón para crear un repositorio nuevo]*
-
-Después eliges el nombre del repositorio y haces clic en **Create repository**.
-
-Luego tienes que descargar los archivos del proyecto original. Para eso puedes ir a:
-
-**Code → Download ZIP**
-
-*[Figura 5. Descargar el proyecto como archivo ZIP]*
-
-Después de descargarlo, tienes que descomprimir el archivo. Ya con los archivos listos, puedes subirlos a tu nuevo repositorio desde:
-
-**Add file → Upload files**
-
-Arrastras los archivos, esperas a que se suban y finalmente haces clic en **Commit changes**.
-
-*[Figura 6. Subiendo los archivos al repositorio]*
-
----
 
 ## 3. Abrir el proyecto con Codespaces
 

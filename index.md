@@ -19,6 +19,4 @@ Este repositorio está diseñado para entender como utilizar la plantilla de rep
 Contenido:
 - [1. Acerca de Mí](01-acerca-de-mi.md)
 - [2. Semana 1: Portafolio Web](02-semana1-portafolioweb.md)
-- [3. Escribir en Markdown](03-markdown.md)
-- [4. Personalización visual](04-estilos.md)
 
