@@ -9,5 +9,6 @@ nav_order: 2
 - Tengo 18 años 
 - Estudio Ingeniería Mecatrónica 
 - No me gustan las fotos
+- Mi color favorito es el verde 
 Foto: 
 ![Blink1](assets/img/01-publicar/acercademi01.jpeg)
