@@ -8,3 +8,6 @@ nav_order: 2
 - Me llamo Valeria Ramos Acevedo 
 - Tengo 18 años 
 - Estudio Ingeniería Mecatrónica 
+- No me gustan las fotos
+Foto: 
+![Blink1](assets/img/01-publicar/acercademi01.jpeg)
