@@ -19,4 +19,7 @@ Este repositorio está diseñado para entender como utilizar la plantilla de rep
 Contenido:
 - [1. Acerca de Mí](01-acerca-de-mi.md)
 - [2. Semana 1: Portafolio Web](02-semana1-portafolioweb.md)
+- [3. Arduino 1: 2026](03-arduino1-2026.md)
+- [4. Cubo mdf](04-cubomdf.md)
+- [5. Brazo Robótico](05-brazorobotico.md)
 
