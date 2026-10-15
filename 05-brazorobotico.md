@@ -8,13 +8,17 @@ nav_order: 6
 ## Introducción y Requerimientos
 Para esta práctica en pareja, el objetivo principal fue diseñar y armar un brazo robot que cumpliera con varias especificaciones técnicas basadas en las instrucciones del profesor:
 
-### Actuadores: Usamos un total de 4 servomotores (2 potentes MG995 para las articulaciones principales y 2 SG90 más ligeros para los movimientos finos y la pinza).
+### Actuadores: 
+Usamos un total de 4 servomotores (2 potentes MG995 para las articulaciones principales y 2 SG90 más ligeros para los movimientos finos y la pinza).
 
-### Control: El sistema se controló mediante un Arduino y potenciómetros, tal como lo vimos en clase.
+### Control: 
+El sistema se controló mediante un Arduino y potenciómetros, tal como lo vimos en clase.
 
-### Estructura: Se fabricó con corte láser utilizando MDF de 3 mm, manteniendo un tamaño compacto y menor a los 30 cm (aproximadamente 20 cm).
+### Estructura: 
+Se fabricó con corte láser utilizando MDF de 3 mm, manteniendo un tamaño compacto y menor a los 30 cm (aproximadamente 20 cm).
 
-### Pinza: Diseñada específicamente con la apertura y fuerza necesarias para agarrar y sostener sin problema una pelota de 6 cm de diámetro.
+### Pinza: 
+Diseñada específicamente con la apertura y fuerza necesarias para agarrar y sostener sin problema una pelota de 6 cm de diámetro.
 
 ## Diseño y Planos en SOLIDWORKS
 Para cumplir con la documentación, realizamos el modelado en SOLIDWORKS de cada una de las piezas que conforman la estructura del brazo, incluyendo las cotas y dimensiones necesarias para el corte láser. Como queríamos mantenerlo funcional y sin complicarnos de más, optamos por un diseño bastante simple y directo.
