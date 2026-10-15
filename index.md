@@ -22,4 +22,4 @@ Contenido:
 - [3. Arduino 1: 2026](03-arduino1-2026.md)
 - [4. Cubo mdf](04-cubomdf.md)
 - [5. Brazo Robótico](05-brazorobotico.md)
-
+- [6. Videojuego](06-videojuego.md)
