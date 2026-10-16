@@ -77,3 +77,22 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:contain
 .touch-controls button{flex:1;min-height:44px;background:#101c22;color:var(--green);border:1px solid #2b4145;font:12px 'DM Mono',monospace;touch-action:none}
 .touch-controls button:active{background:#1c302b;border-color:var(--green)}
 @media(max-width:760px),(pointer:coarse){.touch-controls{display:flex}.game-footer .live-label{display:none}}
+
+
+/* AFTER DARK: sharper 16-bit / cyberpunk treatment */
+:root{--pixel-ink:#030807}
+canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+.game-panel{border-color:#31504c;box-shadow:0 0 0 1px #05090d,0 24px 80px #000b,0 0 45px #55e7df0a}
+.canvas-wrap{background:#030807}
+.hud{background:linear-gradient(90deg,#08120f,#0b151b,#100b13)}
+.hud strong{font-size:12px;text-shadow:0 0 9px #55e7df24}
+.character-card{image-rendering:pixelated;border-radius:0;box-shadow:4px 4px 0 #020506}
+.character-card.selected{box-shadow:4px 4px 0 #38532c,inset 0 0 20px #b6ff5c0b}
+.avatar{font-family:'DM Mono',monospace;font-weight:700;image-rendering:pixelated;box-shadow:3px 3px 0 #030607}
+.primary-button{border-radius:0;box-shadow:4px 4px 0 #38532c}
+.primary-button:hover{box-shadow:4px 4px 0 #38532c,0 0 24px #b6ff5c20}
+.screen{background:linear-gradient(90deg,#030807ee,#06110fe8);backdrop-filter:none}
+.screen h2,.screen-kicker,.micro-copy{ text-shadow:2px 2px 0 #020706 }
+.game-footer{background:#080f13}
+.mission-grid article{border-left-color:#34574c}
+@media(max-width:640px){.character-card{box-shadow:2px 2px 0 #020506}.primary-button{box-shadow:3px 3px 0 #38532c}}
