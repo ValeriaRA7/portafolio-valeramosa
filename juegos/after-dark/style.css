@@ -96,3 +96,29 @@ canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .game-footer{background:#080f13}
 .mission-grid article{border-left-color:#34574c}
 @media(max-width:640px){.character-card{box-shadow:2px 2px 0 #020506}.primary-button{box-shadow:3px 3px 0 #38532c}}
+
+/* Boot terminal intro + end-of-sector transitions */
+.boot-sequence{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(18px,4vw,44px);background:#020704;color:#70ff9b;font:clamp(9px,1.25vw,12px)/1.8 'DM Mono',monospace;letter-spacing:.04em;overflow:hidden}
+.boot-sequence:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 3px,#8affb00b 4px);z-index:1}
+.boot-top,.boot-bottom{display:flex;justify-content:space-between;gap:12px;color:#42885b;font-size:9px;position:relative;z-index:2}
+.boot-terminal{width:min(620px,100%);margin:auto 0;position:relative;z-index:2;text-align:left}
+.boot-line{display:flex;justify-content:space-between;gap:10px;margin:5px 0;opacity:0;animation:boot-type .35s steps(18,end) forwards}
+.boot-line span{color:#b6ff5c}
+.line-a{animation-delay:.25s}.line-b{animation-delay:.65s}.line-c{animation-delay:1.05s}.line-d{animation-delay:1.45s}
+.boot-warning{margin-top:25px;color:#b6ff5c;opacity:0;animation:boot-type .4s steps(22,end) 1.95s forwards;text-shadow:0 0 12px #b6ff5c55}
+.boot-progress{height:4px;flex:1;max-width:240px;background:#132519;border:1px solid #255333}
+.boot-progress i{display:block;height:100%;width:0;background:#b6ff5c;box-shadow:0 0 14px #b6ff5c;animation:boot-load 2.6s steps(20,end) forwards}
+.boot-sequence{animation:boot-fade .35s ease 3.1s forwards}
+.boot-sequence.boot-done{display:none}
+@keyframes boot-type{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes boot-load{to{width:100%}}
+@keyframes boot-fade{to{opacity:0;visibility:hidden;pointer-events:none}}
+.screen:not(.hidden){animation:screen-arrive .38s steps(5,end) both}
+@keyframes screen-arrive{from{opacity:0;transform:translateY(7px);filter:brightness(2)}to{opacity:1;transform:translateY(0);filter:brightness(1)}}
+canvas.game-starting{animation:grid-wake .7s steps(7,end)}
+@keyframes grid-wake{0%{filter:brightness(3) saturate(.2);transform:scaleY(.015);transform-origin:50% 50%}40%{filter:brightness(1.8);transform:scaleY(1.02)}100%{filter:brightness(1);transform:scaleY(1)}}
+.avatar-nyx{color:#c78bff;box-shadow:0 0 13px #c78bff22}
+.character-select{gap:7px}
+.character-card{padding-left:4px;padding-right:4px}
+@media(max-width:640px){.boot-top,.boot-bottom{font-size:7px}.boot-line{font-size:8px}.boot-warning{font-size:8px}.character-card small{font-size:7px}.character-select{gap:4px}}
+@media(prefers-reduced-motion:reduce){.boot-sequence,.boot-line,.boot-warning,.boot-progress i,.screen:not(.hidden),canvas.game-starting{animation:none!important}.boot-sequence{display:none}}
