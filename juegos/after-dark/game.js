@@ -119,7 +119,7 @@
     booth = {x:level.booth,y:FLOOR-90,w:42,h:90};
     const stats = characters[selectedCharacter];
     player = {x:55,y:FLOOR-42,w:24,h:38,vx:0,vy:0,onGround:false,face:1,color:stats.color,speed:stats.speed,jump:stats.jump,invulnerable:0};
-    agents = [{x:Math.max(4,player.x-92),y:FLOOR-40,w:24,h:38,offset:0},{x:Math.max(-70,player.x-175),y:FLOOR-40,w:24,h:38,offset:1}];
+    agents = [{x:player.x-220,y:FLOOR-40,w:24,h:38,offset:0},{x:player.x-340,y:FLOOR-40,w:24,h:38,offset:1}];
     cameraX = 0;
     particles = [];
     elapsed = 0;
@@ -342,9 +342,19 @@
   }
 
   function loop(now) {
-    const dt=Math.min(now-(lastTime||now),34);lastTime=now;
-    if(state==="playing")update(dt);
-    draw();
+    try {
+      const dt=Math.min(now-(lastTime||now),34);lastTime=now;
+      if(state==="playing")update(dt);
+      draw();
+    } catch (error) {
+      console.error("After Dark game loop error:", error);
+      const screen = document.getElementById("start-screen");
+      if (screen) {
+        screen.classList.remove("hidden");
+        screen.innerHTML = '<div class="screen-kicker">GRID ERROR</div><h2>CONNECTION<br><span>INTERRUPTED.</span></h2><p class="screen-copy">Error del juego: ' + String(error.message || error).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch])) + '</p><button class="primary-button" type="button" onclick="location.reload()">RELOAD GAME <span>↻</span></button>';
+      }
+      return;
+    }
     requestAnimationFrame(loop);
   }
 
