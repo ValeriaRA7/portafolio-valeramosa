@@ -165,7 +165,6 @@
     const stats = characters[selectedCharacter];
     const movingLeft = keys.has("ArrowLeft") || keys.has("a") || keys.has("A");
     const movingRight = keys.has("ArrowRight") || keys.has("d") || keys.has("D");
-    player.vx = (movingRight?1:0 - (movingLeft?1:0));
     if(movingLeft && !movingRight){player.vx=-player.speed;player.face=-1;}
     else if(movingRight && !movingLeft){player.vx=player.speed;player.face=1;}
     else player.vx=0;
@@ -186,7 +185,7 @@
     for(const f of fragments){
       if(f.taken)continue;
       const dx=(player.x+player.w/2)-f.x,dy=(player.y+player.h/2)-f.y;
-      if(Math.hypot(dx,dy)<24){f.taken=true;score++;burst(f.x-cameraX,f.y,10,"#b6ff5c");}
+      if(Math.hypot(dx,dy)<24){f.taken=true;score++;burst(f.x,f.y,10,"#b6ff5c");}
     }
 
     for(const h of hazards){
@@ -196,7 +195,7 @@
     }
 
     for(const agent of agents){
-      const target=player.x-34-agent.offset*4;
+      const target=player.x-8-agent.offset*4;
       if(agent.x<target)agent.x+=level.agentSpeed*step;
       else agent.x+=0.18*step;
       agent.x=Math.min(agent.x,player.x-2);
