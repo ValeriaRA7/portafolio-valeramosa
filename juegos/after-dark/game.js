@@ -1,111 +1,45 @@
 (() => {
-  "use strict";
-  const canvas = document.getElementById("game");
-  const ctx = canvas && canvas.getContext("2d");
-  const startScreen = document.getElementById("start-screen");
-  const endScreen = document.getElementById("end-screen");
-  const startButton = document.getElementById("start-button");
-  const endButton = document.getElementById("end-button");
-  const pauseTag = document.getElementById("pause-tag");
-  const levelLabel = document.getElementById("level-label");
-  const scoreLabel = document.getElementById("score-label");
-  const threatLabel = document.getElementById("threat-label");
-  const endKicker = document.getElementById("end-kicker");
-  const endTitle = document.getElementById("end-title");
-  const endCopy = document.getElementById("end-copy");
-  if (!canvas || !ctx || !startScreen || !startButton) return;
-
-  const W = canvas.width, H = canvas.height, FLOOR = 468;
-  const chars = {
-    ghost: {name:"GHOST", color:"#6cf4e8", speed:3.7, jump:12.5},
-    glitch:{name:"GLITCH", color:"#ff477e", speed:4.3, jump:12},
-    echo:  {name:"ECHO", color:"#b6ff5c", speed:3.5, jump:14}
-  };
-  const stages = [
-    {name:"THE CITY", width:2100, exit:1980, platforms:[[0,468,420],[500,468,330],[910,468,340],[1320,468,330],[1720,468,380],[230,365,120],[620,330,120],[1000,355,130],[1430,320,130],[1740,350,120]], coins:[[270,330],[660,295],[1040,320],[1470,285],[1780,315]], spikes:[ [350,45],[720,45],[1110,45],[1510,45] ]},
-    {name:"THE SUBWAY",width:2300,exit:2180,platforms:[[0,468,320],[400,468,300],[780,468,310],[1170,468,300],[1550,468,300],[1900,468,400],[100,370,110],[480,330,110],[850,350,120],[1250,315,110],[1620,340,120],[1940,300,120]],coins:[[140,335],[520,295],[890,315],[1290,280],[1660,305],[1980,265]],spikes:[[250,42],[600,42],[980,42],[1350,42],[1730,42]]},
-    {name:"THE MAINFRAME",width:2550,exit:2420,platforms:[[0,468,280],[360,468,280],[720,468,280],[1080,468,280],[1440,468,280],[1800,468,280],[2160,468,390],[70,365,100],[420,320,100],[790,340,100],[1150,300,100],[1510,330,100],[1870,290,100],[2220,320,100]],coins:[[110,330],[460,285],[830,305],[1190,265],[1550,295],[1910,255],[2260,285]],spikes:[[180,40],[500,40],[860,40],[1220,40],[1580,40],[1940,40]]}
-  ];
-  let selected = "ghost", stageIndex=0, player, coins=[], score=0, camera=0, state="menu", keys=new Set(), last=0, best=0;
-  try { best=Number(localStorage.getItem("afterDarkBest")||0); } catch(e) {}
-  function loadStage() {
-    const s=stages[stageIndex];
-    player={x:55,y:FLOOR-40,w:24,h:38,vx:0,vy:0,ground:false,color:chars[selected].color};
-    coins=s.coins.map(([x,y])=>({x,y,taken:false}));
-    camera=0;
-    levelLabel.textContent=String(stageIndex+1).padStart(2,"0")+" / 03";
-    scoreLabel.textContent=String(score).padStart(2,"0");
-    threatLabel.textContent="ACTIVE";
-  }
-  function start() {
-    stageIndex=0; score=0; loadStage(); state="playing";
-    startScreen.classList.add("hidden"); endScreen.classList.add("hidden"); pauseTag.classList.add("hidden");
-    last=performance.now(); canvas.focus();
-  }
-  function finish(won) {
-    state=won?"complete":"dead";
-    endScreen.classList.remove("hidden"); pauseTag.classList.add("hidden");
-    if(won && stageIndex<stages.length-1) {
-      endKicker.textContent="SECTOR "+String(stageIndex+1).padStart(2,"0")+" CLEARED";
-      endTitle.innerHTML="YOU FOUND<br><span>A WAY OUT.</span>";
-      endCopy.textContent="Nice. One more sector to go.";
-      endButton.innerHTML='NEXT SECTOR <span>↗</span>';
-    } else if(won) {
-      endKicker.textContent="CONNECTION RESTORED";
-      endTitle.innerHTML="YOU BEAT<br><span>THE SYSTEM.</span>";
-      endCopy.textContent="All sectors cleared. You escaped the grid.";
-      endButton.innerHTML='RUN IT AGAIN <span>↻</span>';
-      threatLabel.textContent="ESCAPED";
-    } else {
-      endKicker.textContent="CONNECTION LOST";
-      endTitle.innerHTML="THEY FOUND<br><span>YOU.</span>";
-      endCopy.textContent="Try again. Keep moving and jump over the pink spikes.";
-      endButton.innerHTML='TRY AGAIN <span>↻</span>';
-      threatLabel.textContent="CAUGHT";
-    }
-    if(score>best){best=score;try{localStorage.setItem("afterDarkBest",String(best));}catch(e){}}
-  }
-  function jump(){if(state==="playing"&&player.ground){player.vy=-chars[selected].jump;player.ground=false;}}
-  function update(dt) {
-    const s=stages[stageIndex], speed=chars[selected].speed, step=Math.min(dt/16.67,2);
-    const left=keys.has("ArrowLeft")||keys.has("a")||keys.has("A");
-    const right=keys.has("ArrowRight")||keys.has("d")||keys.has("D");
-    player.vx=left===right?0:(left?-speed:speed);
-    const oldBottom=player.y+player.h;
-    player.x=Math.max(0,Math.min(s.width-player.w,player.x+player.vx*step));
-    player.vy+=0.58*step; player.y+=player.vy*step; player.ground=false;
-    for(const [x,y,w] of s.platforms){
-      if(player.x+player.w>x && player.x<x+w && oldBottom<=y+6 && player.y+player.h>=y && player.vy>=0){
-        player.y=y-player.h; player.vy=0; player.ground=true;
-      }
-    }
-    if(player.y>H+100){finish(false);return;}
-    for(const c of coins){if(!c.taken&&Math.hypot(player.x+12-c.x,player.y+18-c.y)<23){c.taken=true;score++;scoreLabel.textContent=String(score).padStart(2,"0");}}
-    for(const [x,w] of s.spikes){if(player.x+player.w>x+4&&player.x<x+w-4&&player.y+player.h>FLOOR-23){finish(false);return;}}
-    camera=Math.max(0,Math.min(s.width-W,player.x-W*.34));
-    if(player.x+player.w>s.exit)finish(true);
-  }
-  function draw() {
-    const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#07101b");bg.addColorStop(1,"#17262b");
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    // City skyline
-    for(let i=0;i<22;i++){const x=i*55-(camera*.18%55),h=75+(i*37%105);ctx.fillStyle="#0b1922";ctx.fillRect(x,FLOOR-h,45,h);ctx.fillStyle="#6cf4e8";ctx.globalAlpha=.25;ctx.fillRect(x+12,FLOOR-h+16,4,6);ctx.fillRect(x+28,FLOOR-h+33,4,6);ctx.globalAlpha=1;}
-    const s=stages[stageIndex];
-    for(const [x,y,w,h0] of s.platforms){const sx=x-camera;ctx.fillStyle="#111d25";ctx.fillRect(sx,y,w,h0||72);ctx.fillStyle="#6cf4e8";ctx.fillRect(sx,y,w,3);ctx.strokeStyle="#24373d";ctx.strokeRect(sx,y,w,1);}
-    for(const [x,w] of s.spikes){const sx=x-camera;ctx.fillStyle="#ff477e";ctx.shadowColor="#ff477e";ctx.shadowBlur=10;for(let a=0;a<Math.floor(w/12);a++){ctx.beginPath();ctx.moveTo(sx+a*12,FLOOR);ctx.lineTo(sx+a*12+6,FLOOR-20);ctx.lineTo(sx+a*12+12,FLOOR);ctx.fill();}ctx.shadowBlur=0;}
-    for(const c of coins){if(c.taken)continue;const x=c.x-camera;ctx.fillStyle="#b6ff5c";ctx.shadowColor="#b6ff5c";ctx.shadowBlur=14;ctx.fillRect(x-5,c.y-5,10,10);ctx.shadowBlur=0;}
-    const bx=s.exit-camera;ctx.fillStyle="#102c30";ctx.fillRect(bx,FLOOR-90,42,90);ctx.strokeStyle="#6cf4e8";ctx.lineWidth=2;ctx.strokeRect(bx,FLOOR-90,42,90);ctx.fillStyle="#b6ff5c";ctx.font="10px monospace";ctx.fillText("EXIT",bx+5,FLOOR-100);
-    // Player
-    ctx.shadowColor=player.color;ctx.shadowBlur=12;ctx.fillStyle=player.color;ctx.fillRect(player.x-camera,player.y+2,24,28);ctx.fillStyle="#081016";ctx.fillRect(player.x-camera+5,player.y+8,5,5);ctx.fillRect(player.x-camera+14,player.y+8,5,5);ctx.fillStyle=player.color;ctx.fillRect(player.x-camera+3,player.y+30,7,8);ctx.fillRect(player.x-camera+15,player.y+30,7,8);ctx.shadowBlur=0;
-    ctx.fillStyle="#c2d8d2";ctx.font="11px monospace";ctx.fillText(s.name+" // "+chars[selected].name,18,24);ctx.fillStyle="#b6ff5c";ctx.fillRect(18,35,120*Math.min(1,player.x/s.exit),2);ctx.fillStyle="#8ba09c";ctx.textAlign="right";ctx.fillText("BEST "+String(best).padStart(2,"0"),W-18,24);ctx.textAlign="left";
-  }
-  function loop(now){try{const dt=Math.min(now-(last||now),34);last=now;if(state==="playing")update(dt);draw();requestAnimationFrame(loop);}catch(err){console.error(err);state="error";startScreen.classList.remove("hidden");startScreen.innerHTML='<div class="screen-kicker">GRID ERROR</div><h2>CONNECTION<br><span>INTERRUPTED.</span></h2><p class="screen-copy">'+String(err.message||err).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]))+'</p><button class="primary-button" onclick="location.reload()">RELOAD GAME</button>';}}
-  document.querySelectorAll(".character-card").forEach(btn=>btn.addEventListener("click",()=>{selected=btn.dataset.character;document.querySelectorAll(".character-card").forEach(card=>card.classList.toggle("selected",card===btn));}));
-  startButton.addEventListener("click",start);
-  endButton.addEventListener("click",()=>{if(state==="complete"&&stageIndex<stages.length-1){stageIndex++;loadStage();state="playing";endScreen.classList.add("hidden");last=performance.now();}else start();});
-  window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();keys.add(e.key);if((e.key===" "||e.key==="ArrowUp"||e.key==="w"||e.key==="W")&&!e.repeat)jump();if((e.key==="p"||e.key==="P"||e.key==="Escape")&&state==="playing"){state="paused";pauseTag.classList.remove("hidden");}else if((e.key==="p"||e.key==="P"||e.key==="Escape")&&state==="paused"){state="playing";pauseTag.classList.add("hidden");last=performance.now();}});
-  window.addEventListener("keyup",e=>keys.delete(e.key));window.addEventListener("blur",()=>keys.clear());
-  const touch=document.createElement("div");touch.className="touch-controls";touch.innerHTML='<button data-key="ArrowLeft">←</button><button data-key="ArrowRight">→</button><button data-jump="1">JUMP ↗</button>';document.querySelector(".game-panel").appendChild(touch);
-  touch.querySelectorAll("button").forEach(b=>{const down=e=>{e.preventDefault();if(b.dataset.jump)jump();else keys.add(b.dataset.key);};const up=e=>{e.preventDefault();if(b.dataset.key)keys.delete(b.dataset.key);};b.addEventListener("pointerdown",down);["pointerup","pointercancel","pointerleave"].forEach(t=>b.addEventListener(t,up));});
-  loadStage();state="menu";draw();requestAnimationFrame(loop);
+"use strict";
+const canvas=document.getElementById("game"),ctx=canvas&&canvas.getContext("2d");
+const startScreen=document.getElementById("start-screen"),endScreen=document.getElementById("end-screen"),startButton=document.getElementById("start-button"),endButton=document.getElementById("end-button"),pauseTag=document.getElementById("pause-tag"),levelLabel=document.getElementById("level-label"),scoreLabel=document.getElementById("score-label"),threatLabel=document.getElementById("threat-label"),endKicker=document.getElementById("end-kicker"),endTitle=document.getElementById("end-title"),endCopy=document.getElementById("end-copy"),panel=document.querySelector(".game-panel");
+if(!canvas||!ctx||!startScreen||!startButton||!endScreen||!panel)return;
+const W=canvas.width,H=canvas.height,FLOOR=468;ctx.imageSmoothingEnabled=false;
+const chars={ghost:{name:"GHOST",color:"#70f5e6",speed:3.8,jump:12.5,coat:"#172f3a"},glitch:{name:"GLITCH",color:"#ff477e",speed:4.5,jump:12,coat:"#40202f"},echo:{name:"ECHO",color:"#c2ff67",speed:3.6,jump:14,coat:"#26351e"}};
+const stages=[
+{name:"01 // RAIN CITY",theme:"city",width:2220,exit:2110,platforms:[[0,468,400],[470,468,320],[860,468,330],[1260,468,320],[1660,468,560],[220,365,125],[570,330,120],[950,350,130],[1370,315,125],[1770,350,130],[1930,285,95]],coins:[[265,330],[615,295],[995,315],[1415,280],[1815,315],[1975,250]],spikes:[[320,42],[675,42],[1070,42],[1470,42],[1840,42]],accent:"#55e7df"},
+{name:"02 // LAST TRAIN",theme:"subway",width:2440,exit:2320,platforms:[[0,468,310],[390,468,300],[760,468,300],[1130,468,300],[1500,468,300],[1870,468,570],[95,370,105],[455,320,115],[825,350,110],[1195,300,115],[1565,335,110],[1935,290,120],[2130,355,100]],coins:[[135,335],[495,285],[865,315],[1235,265],[1605,300],[1975,255],[2170,320]],spikes:[[220,42],[535,42],[905,42],[1275,42],[1645,42],[2015,42]],accent:"#ff477e"},
+{name:"03 // THE MATRIX",theme:"matrix",width:2700,exit:2570,platforms:[[0,468,270],[340,468,270],[680,468,270],[1020,468,270],[1360,468,270],[1700,468,270],[2040,468,660],[70,360,100],[410,315,100],[750,340,100],[1090,285,100],[1430,325,100],[1770,275,100],[2110,310,100],[2320,250,110]],coins:[[110,325],[450,280],[790,305],[1130,250],[1470,290],[1810,240],[2150,275],[2360,215]],spikes:[[155,42],[480,42],[820,42],[1160,42],[1500,42],[1840,42],[2180,42]],accent:"#b6ff5c"}];
+let selected="ghost",stageIndex=0,player,coins=[],score=0,camera=0,state="menu",keys=new Set(),last=0,best=0,agents=[],rain=[],codeRain=[];
+try{best=Number(localStorage.getItem("afterDarkBest")||0)}catch(e){}
+function rng(n){const x=Math.sin(n*127.1+stageIndex*31.7)*43758.5453;return x-Math.floor(x)}
+function loadStage(){const s=stages[stageIndex];player={x:55,y:FLOOR-40,w:24,h:38,vx:0,vy:0,ground:false,face:1,anim:0,color:chars[selected].color};coins=s.coins.map(([x,y],i)=>({x,y,taken:false,phase:i*1.7}));camera=0;agents=[{x:-150,y:FLOOR-43,w:24,h:41,speed:2.05,anim:0},{x:-430,y:FLOOR-43,w:24,h:41,speed:1.65,anim:1}];rain=Array.from({length:100},(_,i)=>({x:rng(i+2)*W,y:rng(i+130)*H,len:7+rng(i+70)*18,speed:4+rng(i+8)*8}));codeRain=Array.from({length:48},(_,i)=>({x:i*22,y:rng(i+90)*H,speed:1+rng(i+50)*3,len:3+Math.floor(rng(i+180)*8)}));levelLabel.textContent=String(stageIndex+1).padStart(2,"0")+" / 03";scoreLabel.textContent=String(score).padStart(2,"0");threatLabel.textContent="ACTIVE"}
+function start(){stageIndex=0;score=0;loadStage();state="playing";startScreen.classList.add("hidden");endScreen.classList.add("hidden");pauseTag.classList.add("hidden");last=performance.now();canvas.focus()}
+function finish(won){state=won?"complete":"dead";endScreen.classList.remove("hidden");pauseTag.classList.add("hidden");if(won&&stageIndex<stages.length-1){endKicker.textContent="SECTOR "+String(stageIndex+1).padStart(2,"0")+" CLEARED";endTitle.innerHTML="YOU FOUND<br><span>A WAY OUT.</span>";endCopy.textContent=stageIndex===0?"The rain hides you. The underground won't.":"The train is gone. Now face the source.";endButton.innerHTML='ENTER NEXT SECTOR <span>↗</span>'}else if(won){endKicker.textContent="SYSTEM OVERRIDDEN";endTitle.innerHTML="YOU BEAT<br><span>THE SYSTEM.</span>";endCopy.textContent="You made it out. For now.";endButton.innerHTML='RUN IT AGAIN <span>↻</span>';threatLabel.textContent="ESCAPED"}else{endKicker.textContent="IDENTITY COMPROMISED";endTitle.innerHTML="THEY FOUND<br><span>YOU.</span>";endCopy.textContent="The agents caught up. Keep moving, use the high platforms, and don't stop.";endButton.innerHTML='REBOOT <span>↻</span>';threatLabel.textContent="CAUGHT"}if(score>best){best=score;try{localStorage.setItem("afterDarkBest",String(score))}catch(e){}}}
+function jump(){if(state==="playing"&&player.ground){player.vy=-chars[selected].jump;player.ground=false}}
+function update(dt){const s=stages[stageIndex],speed=chars[selected].speed,step=Math.min(dt/16.67,2),left=keys.has("ArrowLeft")||keys.has("a")||keys.has("A"),right=keys.has("ArrowRight")||keys.has("d")||keys.has("D");player.vx=left===right?0:(left?-speed:speed);if(player.vx)player.face=player.vx>0?1:-1;const oldBottom=player.y+player.h;player.x=Math.max(0,Math.min(s.width-player.w,player.x+player.vx*step));player.vy+=.58*step;player.y+=player.vy*step;player.ground=false;player.anim+=step;
+for(const [x,y,w] of s.platforms){if(player.x+player.w>x+2&&player.x<x+w-2&&oldBottom<=y+7&&player.y+player.h>=y&&player.vy>=0){player.y=y-player.h;player.vy=0;player.ground=true}}
+if(player.y>H+100){finish(false);return}
+for(const c of coins){if(!c.taken&&Math.hypot(player.x+12-c.x,player.y+18-c.y)<23){c.taken=true;score++;scoreLabel.textContent=String(score).padStart(2,"0")}}
+for(const [x,w] of s.spikes){if(player.x+player.w>x+4&&player.x<x+w-4&&player.y+player.h>FLOOR-23){finish(false);return}}
+for(const a of agents){a.anim+=step;const chase=player.x-a.x;if(chase>0)a.x+=Math.min(a.speed*step,chase);else a.x+=Math.max(-1.1*step,chase);a.y=FLOOR-a.h;if(Math.abs(player.x-a.x)<22&&player.y+player.h>FLOOR-48){finish(false);return}}
+camera=Math.max(0,Math.min(s.width-W,player.x-W*.34));if(player.x+player.w>s.exit)finish(true);for(const r of rain){r.y+=r.speed*step;if(r.y>H){r.y=-r.len;r.x=(r.x+117)%W}}for(const r of codeRain){r.y+=r.speed*step;if(r.y>H+100)r.y=-r.len*16}}
+function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
+function drawCity(){const par=camera*.15;rect(0,0,W,H,"#08131d");for(let i=0;i<25;i++){const x=i*48-(par%48),h=90+(i*43%155);rect(x,FLOOR-h,43,h,"#0c2029");rect(x+3,FLOOR-h+3,37,2,"#153641");for(let wy=FLOOR-h+18;wy<FLOOR-12;wy+=21)for(let wx=x+8;wx<x+38;wx+=13)if(rng(i*90+wy+wx)>.42)rect(wx,wy,4,7,rng(i+wx+wy)>.5?"#28656a":"#70405f")}
+for(let i=0;i<5;i++){let x=((i*235-camera*.35)%(W+180)+W+180)%(W+180)-80;rect(x,130+i%3*42,75,29,"#10252d");rect(x+4,135+i%3*42,67,2,i%2?"#ff477e":"#55e7df");rect(x+7,145+i%3*42,33,3,"#42626a")}
+rect(0,FLOOR,W,H-FLOOR,"#101c25");rect(0,FLOOR,W,3,"#55e7df");ctx.strokeStyle="#18343b";ctx.lineWidth=1;for(let x=0;x<W;x+=52){ctx.beginPath();ctx.moveTo(x,FLOOR);ctx.lineTo(x-28,H);ctx.stroke()}for(const r of rain){ctx.strokeStyle="#4c929b88";ctx.beginPath();ctx.moveTo(r.x,r.y);ctx.lineTo(r.x-3,r.y+r.len);ctx.stroke()}}
+function drawSubway(){rect(0,0,W,H,"#100c18");for(let y=35;y<FLOOR-85;y+=36)for(let x=0;x<W;x+=62){rect(x,y,60,34,(Math.floor(x/62+y/36)%2)?"#1a202c":"#20202b");rect(x+2,y+2,56,30,"#151d28")}rect(0,75,W,5,"#ff477e");rect(0,81,W,2,"#6d334f");for(let i=0;i<9;i++){const x=i*135-(camera*.22%135);rect(x,45,65,8,"#ff477e");rect(x+4,48,57,2,"#ffc2d4")}const trainX=220-(camera*.12%370);for(let i=-1;i<5;i++){const x=trainX+i*370;rect(x,160,330,150,"#111923");rect(x+8,168,314,134,"#242332");for(let w=0;w<4;w++){rect(x+20+w*76,184,58,55,"#342b3d");rect(x+24+w*76,188,50,47,"#101e29");rect(x+25+w*76,189,48,2,"#ff477e")}rect(x+8,306,314,4,"#ff477e")}rect(0,FLOOR,W,H-FLOOR,"#1a1720");rect(0,FLOOR,W,4,"#ff477e");rect(0,490,W,5,"#6c6370");rect(0,515,W,5,"#6c6370");for(let x=0;x<W;x+=34)rect(x,486,5,42,"#423e4c");for(let i=0;i<9;i++){const x=i*125-(camera*.5%125);rect(x,115,30,4,"#ff477e");rect(x+4,119,2,20,"#bd4c79")}}
+function drawMatrix(){rect(0,0,W,H,"#020b08");ctx.font="12px monospace";for(const r of codeRain){ctx.fillStyle="#1d693e";for(let j=0;j<r.len;j++){const y=r.y-j*16;if(y>-15&&y<H){ctx.globalAlpha=Math.max(.08,.65-j/r.len);ctx.fillText(["0","1","ア","7","╋","λ"][Math.floor(rng(Math.floor(r.x)+j*8+r.y))%6],r.x,y)}}ctx.globalAlpha=1;rect(r.x,r.y,2,3,"#b6ff5c")}ctx.strokeStyle="#174e2c";ctx.lineWidth=1;for(let y=365;y<H;y+=16){ctx.globalAlpha=.2+(y-365)/220*.35;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}for(let x=-W;x<W*2;x+=85){ctx.globalAlpha=.35;ctx.beginPath();ctx.moveTo(W/2+(x-W/2)*.2,365);ctx.lineTo(x,H);ctx.stroke()}ctx.globalAlpha=1;for(let i=0;i<14;i++){const x=i*82-(camera*.28%82);rect(x,130+(i%4)*29,3,110,"#12482a");rect(x+7,155+(i%3)*23,2,65,"#24763b")}rect(0,FLOOR,W,H-FLOOR,"#06170d");rect(0,FLOOR,W,3,"#b6ff5c");for(let x=0;x<W;x+=40)rect(x,FLOOR+8,1,H-FLOOR,"#174d29")}
+function drawAgent(a){const x=Math.round(a.x-camera),y=Math.round(FLOOR-a.h);if(x<-50||x>W+30)return;rect(x+6,y,12,5,"#101318");rect(x+4,y+4,16,12,"#d8d9cf");rect(x+3,y+6,18,7,"#080b10");rect(x+5,y+7,6,4,"#030509");rect(x+13,y+7,6,4,"#030509");rect(x+10,y+7,3,2,"#6cf4e8");rect(x+9,y+16,7,5,"#d9d8ce");rect(x+4,y+19,16,14,"#080b10");rect(x+10,y+19,4,10,"#9c223d");rect(x+1,y+20,5,12,"#11151b");rect(x+19,y+20,5,12,"#11151b");const stride=Math.floor(a.anim/4)%2;rect(x+5,y+32,6,9,stride?"#05070b":"#141821");rect(x+14,y+32,6,9,stride?"#141821":"#05070b");rect(x+2,y+40,10,3,"#030509");rect(x+13,y+40,10,3,"#030509")}
+function drawPlayer(){const c=chars[selected],x=Math.round(player.x-camera),y=Math.round(player.y),stride=player.ground&&Math.abs(player.vx)>.1?Math.floor(player.anim/3)%2:0;rect(x+6,y,12,4,"#0a0d12");rect(x+4,y+3,16,11,"#d7c5ad");rect(x+4,y+2,16,4,selected==="echo"?"#b7c9a0":"#17191f");rect(x+3,y+7,18,5,"#090d13");rect(x+5,y+8,6,3,c.color);rect(x+13,y+8,6,3,c.color);rect(x+10,y+8,3,2,"#080a0e");rect(x+5,y+14,14,4,c.coat);rect(x+3,y+17,18,13,c.coat);rect(x+10,y+17,4,11,c.color);rect(x+1,y+18,4,10,"#d7c5ad");rect(x+19,y+18,4,10,"#d7c5ad");rect(x+5,y+29,6,5,"#11141a");rect(x+14,y+29,6,5,"#11141a");rect(x+(stride?2:5),y+33,7,5,"#05080d");rect(x+(stride?14:17),y+33,7,5,"#05080d");if(player.vx!==0){rect(x+2,y+22,2,5,c.color);rect(x+20,y+22,2,5,c.color)}}
+function draw(){const s=stages[stageIndex];if(s.theme==="city")drawCity();else if(s.theme==="subway")drawSubway();else drawMatrix();for(const [x,y,w] of s.platforms){const sx=Math.round(x-camera);if(sx<-w||sx>W)continue;rect(sx,y,w,72,s.theme==="matrix"?"#0b2917":s.theme==="subway"?"#24202c":"#101d27");rect(sx,y,w,3,s.accent);rect(sx,y+6,w,2,s.theme==="matrix"?"#174d29":"#263b43")}
+for(const [x,w] of s.spikes){const sx=x-camera;ctx.fillStyle=s.accent;ctx.shadowColor=s.accent;ctx.shadowBlur=8;for(let a=0;a<Math.floor(w/12);a++){ctx.beginPath();ctx.moveTo(sx+a*12,FLOOR);ctx.lineTo(sx+a*12+6,FLOOR-19);ctx.lineTo(sx+a*12+12,FLOOR);ctx.fill()}ctx.shadowBlur=0}
+for(const c of coins){if(c.taken)continue;const x=Math.round(c.x-camera),bob=Math.sin(performance.now()/190+c.phase)*3;rect(x-7,c.y-7+bob,14,14,"#d8ff83");rect(x-3,c.y-3+bob,6,6,s.accent);ctx.strokeStyle=s.accent;ctx.strokeRect(x-9,c.y-9+bob,18,18)}
+const bx=Math.round(s.exit-camera),glow=.5+.5*Math.sin(performance.now()/160);ctx.shadowColor=s.accent;ctx.shadowBlur=12+glow*10;rect(bx,FLOOR-91,42,91,s.theme==="matrix"?"#092316":"#10252d");ctx.shadowBlur=0;ctx.strokeStyle=s.accent;ctx.lineWidth=2;ctx.strokeRect(bx,FLOOR-91,42,91);rect(bx+7,FLOOR-80,28,54,s.accent);rect(bx+10,FLOOR-76,22,46,"#06110d");rect(bx+31,FLOOR-20,3,3,"#d8ff83");ctx.fillStyle=s.accent;ctx.font="bold 10px monospace";ctx.fillText("EXIT",bx+5,FLOOR-101);agents.forEach(drawAgent);drawPlayer();ctx.fillStyle="#c2d8d2";ctx.font="11px monospace";ctx.fillText(s.name+"  //  "+chars[selected].name,18,24);rect(18,35,120,2,"#243b39");rect(18,35,120*Math.min(1,player.x/s.exit),2,s.accent);ctx.textAlign="right";ctx.fillStyle="#8ba09c";ctx.fillText("BEST "+String(best).padStart(2,"0"),W-18,24);ctx.textAlign="left";ctx.fillStyle="#c9ffd8";ctx.globalAlpha=.045;for(let y=0;y<H;y+=4)rect(0,y,W,1,"#c9ffd8");ctx.globalAlpha=1}
+function loop(now){try{const dt=Math.min(now-(last||now),34);last=now;if(state==="playing")update(dt);draw();requestAnimationFrame(loop)}catch(err){console.error(err);state="error";startScreen.classList.remove("hidden");startScreen.innerHTML='<div class="screen-kicker">GRID ERROR</div><h2>CONNECTION<br><span>INTERRUPTED.</span></h2><p class="screen-copy">Something went wrong. Reload the game.</p><button class="primary-button" onclick="location.reload()">RELOAD GAME</button>'}}
+document.querySelectorAll(".character-card").forEach(btn=>btn.addEventListener("click",()=>{selected=btn.dataset.character;document.querySelectorAll(".character-card").forEach(card=>card.classList.toggle("selected",card===btn))}));
+startButton.addEventListener("click",start);endButton.addEventListener("click",()=>{if(state==="complete"&&stageIndex<stages.length-1){stageIndex++;loadStage();state="playing";endScreen.classList.add("hidden");last=performance.now()}else start()});
+window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();keys.add(e.key);if((e.key===" "||e.key==="ArrowUp"||e.key==="w"||e.key==="W")&&!e.repeat)jump();if((e.key==="p"||e.key==="P"||e.key==="Escape")&&state==="playing"){state="paused";pauseTag.classList.remove("hidden")}else if((e.key==="p"||e.key==="P"||e.key==="Escape")&&state==="paused"){state="playing";pauseTag.classList.add("hidden");last=performance.now()}});
+window.addEventListener("keyup",e=>keys.delete(e.key));window.addEventListener("blur",()=>keys.clear());
+const touch=document.createElement("div");touch.className="touch-controls";touch.innerHTML='<button data-key="ArrowLeft">←</button><button data-key="ArrowRight">→</button><button data-jump="1">JUMP ↗</button>';panel.appendChild(touch);touch.querySelectorAll("button").forEach(b=>{const down=e=>{e.preventDefault();if(b.dataset.jump)jump();else keys.add(b.dataset.key)},up=e=>{e.preventDefault();if(b.dataset.key)keys.delete(b.dataset.key)};b.addEventListener("pointerdown",down);["pointerup","pointercancel","pointerleave"].forEach(t=>b.addEventListener(t,up))});
+loadStage();state="menu";draw();requestAnimationFrame(loop);
 })();
