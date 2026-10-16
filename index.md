@@ -4,22 +4,21 @@ title: Inicio
 nav_order: 1
 ---
 
-# Plantilla de documentación con Just the Docs
+# Mi portafolio
 
-Este repositorio está diseñado para entender como utilizar la plantilla de repositorio que utiliza **"Just the docs"** de Jekyll y el lenguaje **"Markdown"**:
+Este es mi portafolio de prácticas y proyectos. Aquí voy guardando lo que he trabajado durante el curso, desde actividades de diseño y programación hasta proyectos que fui armando paso a paso. La idea es tener todo organizado y poder ver cómo han ido mejorando mis trabajos.
 
-1. **Crear y publicar** el sitio en GitHub Pages.
-2. Aprender la **estructura** típica de un repo de documentación.
-3. Dominar **Markdown** (texto, listas, tablas, código).
-4. Configurar la **navegación** (sidebar, secciones, orden).
-5. Agregar **imágenes, videos** y otros recursos.
-6. Ajustar **estilos** (logo, colores, footer).
+## Proyectos
 
+- [**Acerca de mí**](01-acerca-de-mi.md): una pequeña presentación.
+- [**Semana 1: Portafolio web**](02-semana1-portafolioweb.md): primeros pasos con la página y su estructura.
+- [**Arduino 1: 2026**](03-arduino1-2026.md): práctica con componentes electrónicos.
+- [**Cubo MDF**](04-cubomdf.md): proyecto de construcción.
+- [**Brazo robótico**](05-brazorobotico.md): trabajo relacionado con mecanismos y robótica.
+- [**Videojuego: After Dark**](06-videojuego.md): videojuego de plataformas en 2D con estética cyberpunk, personajes seleccionables, agentes y tres niveles de dificultad progresiva.
 
-Contenido:
-- [1. Acerca de Mí](01-acerca-de-mi.md)
-- [2. Semana 1: Portafolio Web](02-semana1-portafolioweb.md)
-- [3. Arduino 1: 2026](03-arduino1-2026.md)
-- [4. Cubo mdf](04-cubomdf.md)
-- [5. Brazo Robótico](05-brazorobotico.md)
-- [6. Videojuego](06-videojuego.md)
+## Proyecto destacado: After Dark
+
+En esta práctica hice un videojuego llamado **After Dark**, inspirado en la atmósfera de *The Matrix*. El objetivo es escapar de los agentes y encontrar una cabina telefónica al final de cada nivel. Incluye cuatro personajes con diseños y habilidades diferentes, recorridos variados y una introducción animada estilo terminal.
+
+[**Ver el videojuego y el proceso ↗**](06-videojuego.md)
