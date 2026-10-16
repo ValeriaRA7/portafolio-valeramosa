@@ -3,6 +3,15 @@
 
   const canvas = document.getElementById("game");
   const ctx = canvas.getContext("2d");
+  // If a browser runtime error occurs, show it in the game instead of leaving a silent black screen.
+  window.addEventListener("error", (event) => {
+    const screen = document.getElementById("start-screen");
+    if (!screen) return;
+    screen.classList.remove("hidden");
+    screen.innerHTML = '<div class="screen-kicker">GRID ERROR</div><h2>CONNECTION<br><span>INTERRUPTED.</span></h2><p class="screen-copy">Recarga la página. Si vuelve a pasar, comparte este mensaje: ' +
+      String(event.message || "error desconocido").replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch])) +
+      '</p><button class="primary-button" type="button" onclick="location.reload()">RELOAD GAME <span>↻</span></button>';
+  });
   const startScreen = document.getElementById("start-screen");
   const endScreen = document.getElementById("end-screen");
   const startButton = document.getElementById("start-button");
