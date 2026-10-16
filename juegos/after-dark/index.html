@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#05090d">
   <meta name="description" content="After Dark: una aventura de plataformas cyberpunk. Corre, salta y llega a la cabina telefónica antes de que te alcancen los agentes.">
   <title>AFTER DARK — Run from the system</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <main class="shell">
@@ -29,6 +29,17 @@
       </div>
       <div class="canvas-wrap">
         <canvas id="game" width="960" height="540" aria-label="Juego de plataformas. Usa las flechas o A y D para moverte, y espacio para saltar." tabindex="0"></canvas>
+        <div id="boot-sequence" class="boot-sequence" aria-label="System boot sequence">
+          <div class="boot-top"><span>AD//OS BIOS v4.09</span><span>MEM: 640K OK</span></div>
+          <div class="boot-terminal">
+            <p class="boot-line line-a">INITIALIZING NEURAL LINK<span>........... OK</span></p>
+            <p class="boot-line line-b">LOADING SIMULATION<span>............. OK</span></p>
+            <p class="boot-line line-c">SCANNING IDENTITY<span>.............. FOUND</span></p>
+            <p class="boot-line line-d">AGENT PROTOCOL<span>................. ACTIVE</span></p>
+            <p class="boot-warning">WARNING: YOU ARE NOT SUPPOSED TO BE HERE.</p>
+          </div>
+          <div class="boot-bottom"><span>BOOTING THE GRID</span><div class="boot-progress"><i></i></div><span>PLEASE WAIT_</span></div>
+        </div>
         <div id="start-screen" class="screen">
           <div class="screen-kicker">INCOMING TRANSMISSION // 001</div>
           <h2>CHOOSE YOUR<br><span>RUNNER.</span></h2>
@@ -37,6 +48,7 @@
             <button class="character-card selected" data-character="ghost" type="button"><span class="avatar avatar-ghost">G</span><strong>GHOST</strong><small>Balanced</small></button>
             <button class="character-card" data-character="glitch" type="button"><span class="avatar avatar-glitch">X</span><strong>GLITCH</strong><small>Fast runner</small></button>
             <button class="character-card" data-character="echo" type="button"><span class="avatar avatar-echo">E</span><strong>ECHO</strong><small>High jumper</small></button>
+            <button class="character-card" data-character="nyx" type="button"><span class="avatar avatar-nyx">N</span><strong>NYX</strong><small>Double jump</small></button>
           </div>
           <button id="start-button" class="primary-button" type="button">ENTER THE GRID <span>↗</span></button>
           <p class="micro-copy">WASD / ARROWS TO MOVE <b>·</b> SPACE TO JUMP</p>
@@ -62,6 +74,6 @@
     </section>
     <footer class="site-footer"><span>AFTER DARK <span class="muted">©</span> 2099</span><span>MADE TO ESCAPE THE GRID.</span><a href="../../06-videojuego/">BACK TO PORTFOLIO ↑</a></footer>
   </main>
-  <script src="game.js?v=6"></script>
+  <script src="game.js?v=7"></script>
 </body>
 </html>
