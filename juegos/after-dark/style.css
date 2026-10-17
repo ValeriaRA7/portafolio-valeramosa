@@ -137,3 +137,8 @@ canvas.game-starting{animation:grid-wake .7s steps(7,end)}
 .hud{gap:12px}
 @media(max-width:640px){.game-settings{font-size:7px;padding:9px;align-items:flex-start}.game-settings button{font-size:8px;padding:6px}.hud{gap:5px}.hud>div{min-width:0}.hud-label{font-size:6px}.hud strong{font-size:9px}.game-toast{top:8px;font-size:8px;padding:8px 9px}.game-footer>span:first-child{max-width:100%;line-height:2}}
 @media(prefers-reduced-motion:reduce){.game-toast.toast-pop{animation:none!important}.level-progress #progress-fill{transition:none}}
+
+
+/* Longer story epilogue after the final boss */
+.screen-copy.story-copy{max-width:620px;font-size:11px;line-height:1.65;color:#c0d0ca}
+@media(max-width:640px){.screen-copy.story-copy{font-size:9px;line-height:1.45;margin:8px 0 12px}}
