@@ -122,3 +122,18 @@ canvas.game-starting{animation:grid-wake .7s steps(7,end)}
 .character-card{padding-left:4px;padding-right:4px}
 @media(max-width:640px){.boot-top,.boot-bottom{font-size:7px}.boot-line{font-size:8px}.boot-warning{font-size:8px}.character-card small{font-size:7px}.character-select{gap:4px}}
 @media(prefers-reduced-motion:reduce){.boot-sequence,.boot-line,.boot-warning,.boot-progress i,.screen:not(.hidden),canvas.game-starting{animation:none!important}.boot-sequence{display:none}}
+
+
+/* Expansion update: progress, sound settings, in-game alerts and touch dash */
+.level-progress{height:3px;background:#15231f;overflow:hidden}
+.level-progress #progress-fill{height:100%;width:0;background:var(--green);box-shadow:0 0 12px var(--green);transition:width .08s linear}
+.game-settings{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 18px;background:#070d11;border-top:1px solid var(--line);font:9px 'DM Mono',monospace;letter-spacing:.08em;color:#84989b}
+.game-settings button{background:#101c22;border:1px solid #36524a;color:var(--green);padding:7px 10px;font:9px 'DM Mono',monospace;letter-spacing:.08em;cursor:pointer;white-space:nowrap}
+.game-settings button:hover{border-color:var(--green)}
+.rabbit-hint{display:inline-block;color:#fff;letter-spacing:.14em;margin-top:5px;text-shadow:0 0 10px #fff8}
+.game-toast{position:absolute;z-index:4;left:50%;top:18px;transform:translateX(-50%);max-width:85%;padding:10px 14px;background:#030807ed;border:1px solid var(--green);color:var(--green);font:10px 'DM Mono',monospace;letter-spacing:.12em;text-align:center;box-shadow:0 0 22px #b6ff5c1c;pointer-events:none}
+.game-toast.toast-pop{animation:toast-pop .25s steps(4,end)}
+@keyframes toast-pop{from{opacity:0;transform:translate(-50%,-7px);filter:brightness(2)}to{opacity:1;transform:translate(-50%,0);filter:brightness(1)}}
+.hud{gap:12px}
+@media(max-width:640px){.game-settings{font-size:7px;padding:9px;align-items:flex-start}.game-settings button{font-size:8px;padding:6px}.hud{gap:5px}.hud>div{min-width:0}.hud-label{font-size:6px}.hud strong{font-size:9px}.game-toast{top:8px;font-size:8px;padding:8px 9px}.game-footer>span:first-child{max-width:100%;line-height:2}}
+@media(prefers-reduced-motion:reduce){.game-toast.toast-pop{animation:none!important}.level-progress #progress-fill{transition:none}}
