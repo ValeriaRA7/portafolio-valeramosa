@@ -23,11 +23,12 @@ En esta práctica desarrollé **After Dark**, un videojuego de plataformas en 2D
 - **Pausar:** tecla P o Escape.
 - **Sonido:** puedes activar o desactivar los efectos desde el botón debajo del juego.
 - **Objetivo:** correr, saltar entre plataformas, esquivar obstáculos y agentes, recoger fragmentos de datos y llegar a la cabina telefónica.
-- **Niveles:** hay tres sectores más grandes, con ambientaciones y recorridos distintos. La dificultad y la velocidad de los agentes aumentan en cada uno.
+- **Niveles:** hay tres sectores largos con ambientaciones y recorridos distintos: una ciudad lluviosa, el metro y un núcleo digital. La dificultad y la presión de los agentes aumentan en cada uno. El inicio del segundo sector también tiene una plataforma más amplia para que puedas arrancar con espacio suficiente.
 - **Plataformas móviles:** algunas se desplazan de lado a lado o suben y bajan, así que hay que calcular bien los saltos.
 - **Fragmentos de memoria:** hay tres secretos escondidos en cada sector. Si encuentras los nueve, desbloqueas un final alternativo.
 - **Agentes:** no todos se comportan igual; algunos persiguen directamente, otros saltan y otros pueden aparecer más adelante.
 - **Personajes:** puedes elegir entre Ghost, Glitch, Echo y Nyx. Cada uno tiene un diseño y una habilidad distinta.
+- **Jefe final:** al llegar al núcleo digital te enfrentas al Arquitecto. Tienes que destruir sus cuatro nodos antes de perder tus tres puntos de vida. Acércate y ataca con Espacio o flecha arriba; usa Shift o X para un dash-ataque. Cuando aparezca la advertencia roja, aléjate con A/D o las flechas.
 
 En celular aparecen controles táctiles en la parte inferior del juego, incluidos los botones para saltar y hacer dash. También agregué efectos de sonido para saltos, objetos, el impulso y las transiciones.
 
@@ -48,7 +49,7 @@ El juego está hecho con tres archivos principales dentro de `juegos/after-dark/
 - **`style.css`:** define los colores, la estética cyberpunk, las animaciones y el diseño adaptable.
 - **`game.js`:** controla el movimiento, el dash, los saltos, las plataformas móviles, los objetos coleccionables, el conejo, los agentes, el sonido, los niveles y los finales.
 
-También agregué una barra de progreso, avisos durante la partida y una dificultad más marcada. La cabina telefónica ahora tiene una pequeña secuencia de escape: al llegar, suena y se activa la transición al siguiente sector.
+También agregué una barra de progreso, avisos durante la partida y una dificultad más marcada. La cabina telefónica tiene una pequeña secuencia de escape: al llegar, suena y se activa la transición al siguiente sector. El último nivel termina con una batalla contra el Arquitecto, con barra de vida, ataques, avisos para esquivar y un cierre narrativo.
 
 También añadí una introducción tipo terminal de computadora que muestra mensajes de inicialización antes de empezar. La intención es que parezca que el sistema está cargando la simulación. Al terminar o perder hay transiciones animadas para que las pantallas no aparezcan de golpe.
 
@@ -60,7 +61,7 @@ Este fue el prompt principal que utilicé para definir el juego:
 >
 > Incluye una pantalla de inicio animada como una computadora arrancando, selección entre cuatro personajes con habilidades distintas, controles claros, coleccionables, obstáculos, agentes que persigan al jugador y una cabina telefónica que funcione como salida de cada nivel. Haz tres niveles largos, con escenarios y recorridos diferentes, dificultad progresiva, huecos, plataformas a distintas alturas y plataformas móviles que se desplacen horizontal y verticalmente.
 >
-> En el primer nivel, ambientado en una ciudad lluviosa, el personaje debe seguir a un conejo blanco que le sirve de guía. Al terminar ese nivel, transforma la apariencia de los personajes: empiezan con ropa cotidiana y después desbloquean atuendos más futuristas y llamativos. Mantén diferencias reales entre sus habilidades: un personaje equilibrado, uno más rápido, uno que salta más alto y uno con doble salto.
+> En el primer nivel, ambientado en una ciudad lluviosa, el personaje debe seguir a un conejo blanco que le sirve de guía. Al terminar ese nivel, transforma la apariencia de los personajes: empiezan con ropa cotidiana y después desbloquean atuendos más futuristas y llamativos. Mantén diferencias reales entre sus habilidades: un personaje equilibrado, uno más rápido, uno que salta más alto y uno con doble salto. El tercer sector termina con una batalla contra el Arquitecto: explica en pantalla cómo atacar, hacer un dash-ataque y esquivar sus golpes.
 >
 > Haz que los agentes tengan comportamientos diferentes: algunos persiguen directamente, otros saltan obstáculos y alguno puede teletransportarse para aparecer por delante. Aumenta la velocidad y la presión de los agentes en los niveles avanzados. Incluye un dash con tiempo de recarga, fragmentos de datos para sumar puntos y tres fragmentos de memoria secretos por nivel. Si se encuentran los nueve fragmentos, desbloquea un final alternativo.
 >
