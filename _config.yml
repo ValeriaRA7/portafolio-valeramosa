@@ -28,8 +28,8 @@ search:
 
 # Ejemplo de enlace auxiliar (aparece arriba a la derecha)
 aux_links:
-  "Repositorio en GitHub":
-    - "https://github.com/HuberGiron/portafolio-just-the-docs"
+  "Mi repositorio en GitHub":
+    - "https://github.com/ValeriaRA7/portafolio-valeramosa"
 
 # Enlaces
 permalink: pretty

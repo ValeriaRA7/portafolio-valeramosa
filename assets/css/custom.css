@@ -337,3 +337,193 @@ video {
   height: 100%;
   border: 0;
 }
+
+
+
+/* =========================================
+   NUEVA PALETA: BLACK & FOREST GREEN
+   ========================================= */
+
+:root {
+  --background-color: #080B09;
+  --surface-color: #101812;
+  --green-dark: #10291C;
+  --green-medium: #17452E;
+  --green-accent: #4C9B70;
+  --green-light: #A5D6B5;
+  --text-main: #E2E9E3;
+  --text-muted: #A0AEA3;
+  --border-color: #263A2D;
+  --link-color: #72B88C;
+}
+
+/* Fondo general */
+body,
+.main-content-wrap,
+.main-content {
+  background-color: var(--background-color) !important;
+  color: var(--text-main) !important;
+}
+
+/* Contenido de las páginas */
+.page-content,
+.main-content {
+  background-color: var(--background-color) !important;
+  color: var(--text-main) !important;
+}
+
+/* Header superior */
+.site-header {
+  background-color: #0B160F !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.site-title {
+  color: var(--green-light) !important;
+}
+
+/* Menú lateral */
+.side-bar,
+.side-bar .site-nav,
+.side-bar .nav-list {
+  background-color: #0D1B12 !important;
+}
+
+.side-bar .site-title {
+  color: var(--green-light) !important;
+}
+
+.nav-list .nav-list-link,
+.nav-list .nav-list-link:visited {
+  color: #D5E3D8 !important;
+}
+
+.nav-list .nav-list-link:hover {
+  color: #FFFFFF !important;
+  background-color: rgba(76,155,112,0.15) !important;
+}
+
+.nav-list .nav-list-link.active {
+  color: var(--green-light) !important;
+  background-color: rgba(76,155,112,0.22) !important;
+  border-left-color: var(--green-accent) !important;
+}
+
+/* Flechas del menú */
+.nav-list-expander,
+.nav-list-expander svg {
+  color: var(--green-light) !important;
+  stroke: var(--green-light) !important;
+}
+
+/* Enlaces */
+a,
+a:visited {
+  color: var(--link-color) !important;
+  text-decoration-color: rgba(114,184,140,0.5) !important;
+}
+
+a:hover {
+  color: #A5D6B5 !important;
+  text-decoration-color: #A5D6B5 !important;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--green-light) !important;
+}
+
+/* Texto secundario */
+p, li, blockquote {
+  color: var(--text-main);
+}
+
+/* Tablas */
+table,
+th,
+td {
+  border-color: var(--border-color) !important;
+}
+
+th {
+  background-color: var(--green-dark) !important;
+  color: var(--green-light) !important;
+}
+
+td {
+  background-color: var(--surface-color) !important;
+  color: var(--text-main) !important;
+}
+
+/* Código */
+pre,
+code {
+  background-color: #111B14 !important;
+  color: #B8DCC2 !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Líneas divisorias */
+hr {
+  border-color: var(--border-color) !important;
+}
+
+/* Footer personalizado */
+.custom-footer {
+  background-color: transparent !important;
+  color: var(--text-muted) !important;
+  border-top: 1px solid var(--border-color);
+}
+
+.custom-footer a,
+.custom-footer a:visited {
+  color: var(--green-accent) !important;
+}
+
+.custom-footer__modified strong {
+  color: var(--green-light) !important;
+}
+
+/* Footer lateral */
+.side-bar .site-footer {
+  color: var(--text-muted) !important;
+}
+
+/* Buscador */
+.search-input,
+.search-input-wrap {
+  background-color: #111B14 !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Botones y elementos interactivos */
+button,
+.btn {
+  background-color: var(--green-dark) !important;
+  color: var(--green-light) !important;
+  border-color: var(--green-medium) !important;
+}
+
+button:hover,
+.btn:hover {
+  background-color: var(--green-medium) !important;
+}
+
+/* Selección de texto */
+::selection {
+  background-color: #285C3D;
+  color: #FFFFFF;
+}
+
+/* Menú móvil */
+#menu-toggle + label,
+.menu-label,
+.menu-button,
+.menu-icon,
+.menu-icon svg,
+.site-header svg {
+  color: var(--green-light) !important;
+  fill: var(--green-light) !important;
+  stroke: var(--green-light) !important;
+}
