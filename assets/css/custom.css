@@ -527,3 +527,109 @@ button:hover,
   fill: var(--green-light) !important;
   stroke: var(--green-light) !important;
 }
+
+
+/* ===== FORZAR TEMA NEGRO Y VERDE BOSQUE ===== */
+
+html,
+body,
+body .main,
+.main-content-wrap,
+.main-content,
+.main-content-container,
+.page-content,
+.page-content-wrapper {
+  background: #080B09 !important;
+  color: #E2E9E3 !important;
+}
+
+/* Sidebar */
+.side-bar,
+.side-bar::before,
+.side-bar .site-header,
+.side-bar .site-nav,
+.side-bar .nav-list {
+  background: #0D1B12 !important;
+}
+
+/* Header */
+.site-header {
+  background: #0B160F !important;
+  border-color: #263A2D !important;
+}
+
+/* Texto */
+.main-content,
+.main-content p,
+.main-content li,
+.main-content td {
+  color: #E2E9E3 !important;
+}
+
+/* Títulos */
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content h4 {
+  color: #A5D6B5 !important;
+}
+
+/* Navegación */
+.nav-list-link {
+  color: #D5E3D8 !important;
+}
+
+.nav-list-link:hover,
+.nav-list-link.active {
+  color: #A5D6B5 !important;
+  background: #17452E !important;
+}
+
+/* Enlaces */
+.main-content a,
+.custom-footer a {
+  color: #72B88C !important;
+}
+
+/* Tablas */
+.main-content table,
+.main-content th,
+.main-content td {
+  background-color: #101812 !important;
+  color: #E2E9E3 !important;
+  border-color: #263A2D !important;
+}
+
+.main-content th {
+  background-color: #10291C !important;
+  color: #A5D6B5 !important;
+}
+
+/* Bloques de código */
+.highlight,
+pre,
+code {
+  background-color: #111B14 !important;
+  color: #B8DCC2 !important;
+  border-color: #263A2D !important;
+}
+
+/* Footer */
+.custom-footer {
+  background: transparent !important;
+  color: #A0AEA3 !important;
+  border-top: 1px solid #263A2D !important;
+}
+
+/* Buscador */
+.search-input,
+.search-input-wrap {
+  background: #111B14 !important;
+  color: #E2E9E3 !important;
+  border-color: #263A2D !important;
+}
+
+/* Separadores */
+hr {
+  border-color: #263A2D !important;
+}
